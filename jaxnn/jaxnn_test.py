@@ -49,13 +49,26 @@ class TestNeuron(unittest.TestCase):
 
         for i in range(20):
             output = float(n.forward(inputs))
-            print("Output: ", output)
-
-            loss = np.array([output - inputs[1]]) # The learnt function is a selector, which selects second input.
-            print("Loss: ", loss)
-
+            loss = np.array([output - inputs[1]]) # f(X) = X[1]
             n.backward(loss)
-            print("Weights: ", n.weights)
+
+        np_testing.assert_equal(round(output, 2), 2.01)
+        np_testing.assert_equal(round(loss, 2), 0.01)
+
+    def test_training_flow_second_input_dying_relu(self):
+        inputs = np.array([10., 2., 5.])
+        n = Neuron(len(inputs))
+        n.weights = np.array([-1., 1., -1.])
+        n.learning_rate = 0.1
+
+        for i in range(20):
+            output = float(n.forward(inputs))
+            loss = np.array([output - inputs[1]]) # f(X) = X[1]
+            n.backward(loss)
+
+        np_testing.assert_equal(output, 0.)
+        np_testing.assert_equal(loss, np.array(-2.))
+        np_testing.assert_array_equal(n.weights, np.array([-1., 1., -1.])) # no learning
 
 if __name__ == '__main__':
     unittest.main()

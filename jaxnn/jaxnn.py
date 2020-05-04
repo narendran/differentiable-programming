@@ -5,6 +5,7 @@
 # The above command will take the input tensor, run 10 passes on a 2x2 FC
 # neural network optimizing for a binary classification on the labels given.
 import jax.numpy as np
+from jax.nn import relu
 from jax import grad, jit, vmap, ops
 
 class Neuron(object):
@@ -19,8 +20,7 @@ class Neuron(object):
     def forward(self, inputs):
         self.inputs = inputs # store these for backward pass
         linear = np.dot(self.weights, inputs) + self.bias
-        relu = lambda x: x if x > 0 else 0
-        return relu(linear)
+        return relu(linear) # SELU should be better, leaving it as is to retain easier thinking
 
     def backward(self, input_loss_gradients):
         sum_loss_gradients = np.sum(input_loss_gradients) # This is dL/dq

@@ -19,7 +19,7 @@ class Neuron(object):
     def forward(self, inputs):
         self.inputs = inputs # store these for backward pass
         linear = np.dot(self.weights, inputs) + self.bias
-        relu = lambda x: x if x > 1 else 0
+        relu = lambda x: x if x > 0 else 0
         return relu(linear)
 
     def backward(self, input_loss_gradients):

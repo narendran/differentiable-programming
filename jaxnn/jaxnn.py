@@ -19,6 +19,7 @@ class Neuron(object):
 
     def forward(self, inputs):
         self.inputs = inputs # store these for backward pass
+        
         linear = np.dot(self.weights, inputs) + self.bias
         return relu(linear) # SELU should be better, leaving it as is to retain easier thinking
 

@@ -41,7 +41,9 @@ class TestNeuron(unittest.TestCase):
         np_testing.assert_array_equal(n.backward(backward_loss_gradients), expected_output)
         np_testing.assert_array_equal(n.weights, expected_weights)
 
-    def test_training_flow_second_input(self):
+    # Note that this is not "training" per se since Neuron outputs an activation.
+    # We will most likely need another affine transformation on top of the activation.
+    def test_weight_update_second_input(self):
         inputs = np.array([10., 2., 5.])
         n = Neuron(len(inputs))
         n.weights = np.array([1., 1., -1.])
@@ -49,13 +51,13 @@ class TestNeuron(unittest.TestCase):
 
         for i in range(20):
             output = float(n.forward(inputs))
-            loss = np.array([output - inputs[1]]) # f(X) = X[1]
+            loss = np.array([output - inputs[1]]) # f(X) = X[1], consider squared loss
             n.backward(loss)
 
         np_testing.assert_equal(round(output, 2), 2.01)
         np_testing.assert_equal(round(loss, 2), 0.01)
 
-    def test_training_flow_second_input_dying_relu(self):
+    def test_weight_update_second_input_dying_relu(self):
         inputs = np.array([10., 2., 5.])
         n = Neuron(len(inputs))
         n.weights = np.array([-1., 1., -1.])
@@ -63,7 +65,7 @@ class TestNeuron(unittest.TestCase):
 
         for i in range(20):
             output = float(n.forward(inputs))
-            loss = np.array([output - inputs[1]]) # f(X) = X[1]
+            loss = np.array([output - inputs[1]]) # f(X) = X[1], consider squared loss
             n.backward(loss)
 
         np_testing.assert_equal(output, 0.)

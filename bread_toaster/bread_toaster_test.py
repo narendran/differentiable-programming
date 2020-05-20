@@ -5,13 +5,13 @@ import random
 import jax.numpy as np
 from numpy import testing as np_testing
 
-from bread_toaster import BreadToaster, LearningBreadToaster, BiasableBreadToaster
+from bread_toaster import BreadToaster, LearningBreadToaster, BiasableBreadToaster, FIXED_TOASTING_DURATION_SECONDS
 
 class TestBreadToaster(unittest.TestCase):
 
     def test_fixed_toasting_time(self):
         bread_toaster = BreadToaster()
-        expected_duration_seconds = 60
+        expected_duration_seconds = 2 * FIXED_TOASTING_DURATION_SECONDS
 
         self.assertEqual(bread_toaster.toast_time_fixed(2), expected_duration_seconds)
 
